@@ -5,22 +5,24 @@ using UnityEngine;
 
 public class Boat : MonoBehaviour
 {
-    public float bobbingMultiplier = .5f;
+    public float bobbingMultiplier = .1f;
     public float rollMultiplier = .4f;
+    public float angleX = 2f;
+    public float angleZ = 2f;
+
     private float originalY;
     private Quaternion startRotation;
 
     void Start()
     {
-        originalY = this.transform.position.y;
+        originalY = transform.position.y;
         startRotation = transform.rotation;
     }
 
     void Update()
     {
         BobUpAndDown();
-        RollSideToSide();
-        RollFrontToBack();
+        Roll();
     }
 
     void BobUpAndDown()
@@ -28,16 +30,11 @@ public class Boat : MonoBehaviour
         transform.position = new Vector3(transform.position.x, originalY + ((float)Mathf.Sin(Time.time) * bobbingMultiplier), transform.position.z);
     }
 
-    void RollSideToSide()
+    void Roll()
     {
-        float angle = Mathf.Sin(Time.time * rollMultiplier) * 10f;
-        transform.rotation = startRotation * Quaternion.AngleAxis(angle, Vector3.forward);
-    }
-
-    void RollFrontToBack()
-    {
-        float angle = Mathf.Sin(Time.time * rollMultiplier) * 4f;
-        transform.rotation = startRotation * Quaternion.AngleAxis(angle, Vector3.back);
+        float angle1 = Mathf.Sin(Time.time * rollMultiplier) * angleX;
+        float angle2 = Mathf.Sin(Time.time * rollMultiplier) * angleZ;
+        transform.rotation = startRotation * Quaternion.AngleAxis(angle1, Vector3.left) * Quaternion.AngleAxis(angle2, Vector3.forward);
     }
 }
 
